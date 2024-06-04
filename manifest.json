@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Reccommendly LinkedIn Integration",
+  "version": "1.0",
+  "description": "Integrates LinkedIn with Reccommendly to automate professional reference and work experience collection and analysis.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.linkedin.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
