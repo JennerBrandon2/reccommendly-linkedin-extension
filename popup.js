@@ -6,11 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
         files: ['content.js']
       }, () => {
         chrome.runtime.onMessage.addListener((message) => {
-          if (message.education || message.jobTitle || message.references) {
+          if (message.education || message.jobTitle || message.references || message.discType) {
             const data = {
               education: message.education,
               jobTitle: message.jobTitle,
-              references: message.references
+              references: message.references,
+              discType: message.discType
             };
             displayData(data);
             chrome.storage.local.set({ profileData: data });
@@ -38,5 +39,7 @@ function displayData(data) {
     ${data.references.length > 0
       ? `<ul>${data.references.map(reference => `<li>${reference}</li>`).join('')}</ul>`
       : `<p>No References on Reccommendly. <a href="https://www.reccommendly.com.au/account/leavereference" target="_blank">Leave a reference now</a>.</p>`}
+    <h2>DISC Type</h2>
+    <p>${data.discType}</p>
   `;
 }
