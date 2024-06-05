@@ -5,12 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
         target: { tabId: tabs[0].id },
         files: ['content.js']
       }, () => {
-        // Listener for messages from the content script
         chrome.runtime.onMessage.addListener((message) => {
-          if (message.education || message.jobTitle) {
+          if (message.education || message.jobTitle || message.references) {
             const data = {
               education: message.education,
-              jobTitle: message.jobTitle
+              jobTitle: message.jobTitle,
+              references: message.references
             };
             displayData(data);
             chrome.storage.local.set({ profileData: data });
@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Load and display data if already available
   chrome.storage.local.get(['profileData'], (result) => {
     if (result.profileData) {
       displayData(result.profileData);
@@ -35,5 +34,9 @@ function displayData(data) {
     <p>${data.education}</p>
     <h2>Job Title</h2>
     <p>${data.jobTitle}</p>
+    <h2>References</h2>
+    ${data.references.length > 0
+      ? `<ul>${data.references.map(reference => `<li>${reference}</li>`).join('')}</ul>`
+      : `<p>No References on Reccommendly. <a href="https://www.reccommendly.com.au/account/leavereference" target="_blank">Leave a reference now</a>.</p>`}
   `;
 }
