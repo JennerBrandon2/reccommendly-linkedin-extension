@@ -5,10 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
         target: { tabId: tabs[0].id },
         files: ['content.js']
       }, () => {
-        chrome.tabs.sendMessage(tabs[0].id, { action: "scrapeProfile" }, (response) => {
-          chrome.storage.local.set({ profileData: response.data }, () => {
-            displayData(response.data);
-          });
+        // Listener for messages from the content script
+        chrome.runtime.onMessage.addListener((message) => {
+          if (message.education || message.jobTitle) {
+            const data = {
+              education: message.education,
+              jobTitle: message.jobTitle
+            };
+            displayData(data);
+            chrome.storage.local.set({ profileData: data });
+          }
         });
       });
     });
@@ -25,7 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function displayData(data) {
   const statusDiv = document.getElementById('status');
   statusDiv.innerHTML = `
-    <h2>Job Titles</h2>
-    <ul>${data.jobTitles.map(title => `<li>${title}</li>`).join('')}</ul>
+    <h2>Education Information</h2>
+    <p>${data.education}</p>
+    <h2>Job Title</h2>
+    <p>${data.jobTitle}</p>
   `;
 }
