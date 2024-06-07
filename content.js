@@ -72,12 +72,12 @@
   }
 
   async function getDISCType(jobTitle, education, retries = 5) {
-    const apiKey = 'sk-proj-TaZbcE0WyfsMl26hIcuST3BlbkFJvP21m7fLmUpA4NIXLuTk';  // Replace with your OpenAI API key
+    const apiKey = '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'; // Use the provided API key
     const endpoint = 'https://api.openai.com/v1/chat/completions';
     const messages = [
       { "role": "user", "content": `Job Title: ${jobTitle}\nEducation: ${education}\nDo not provide any context, just an answer,
 Do not repeat what you are told, do not repeat the job title, do not repeat the education
-Do not go through DISC, just answer which 1 they are and 2 likely strenghts and 2 likely weaknesses
+Do not go through DISC, just answer which 1 they are and 2 likely strengths and 2 likely weaknesses
 Act as a DISC expert and provide a disk analysis for profile with Please analyze the DISC personality type based on the provided job title and education. ALWAYS provide a DISC, even if you are not sure` }
     ];
 
@@ -87,10 +87,11 @@ Act as a DISC expert and provide a disk analysis for profile with Please analyze
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
+            'Authorization': `Bearer ${apiKey}`,
+            'OpenAI-Organization': 'org-ENuL70szl6foQPkmi6uD9SMI' // Organization ID
           },
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4",
             messages: messages,
             temperature: 0.7
           })
